@@ -1,3 +1,0 @@
-#ifndef DISPLAY
-#define DISPLAY
-
