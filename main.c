@@ -26,10 +26,12 @@ int main(int argc, char* argv[]){
     int nbAlgo=1,n;
     char choix[256][256];
     char path[256];
+    //checking if the config file exists or not
     if ((file = fopen(argv[1],"r")) == NULL){
         printf("Error! opening file");
         exit(1);
     }
+    //get all the algorithms present in the "algorithms" directory
     pDir = opendir ("./algorithms/build/");
     if (pDir == NULL) 
         printf ("Cannot open directory");
@@ -47,8 +49,7 @@ int main(int argc, char* argv[]){
         printf("\t\t\t\t%d. Exit\n", nbAlgo);
         puts("\t\t\t¤ ~~~ ¤ ¤ ~~~ ¤ ¤ ~~~ ¤");        closedir (pDir);
     }
-    //processTable(file);
-
+    //menu display
     printf("%s\n",path);
     while(1) {
         printf("Enter your choice :  \n");

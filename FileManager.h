@@ -7,7 +7,7 @@
 
 int getProcessnbFromFile(char *fileName)
 {
-    // Read the config file
+    // Read the configuration file
     FILE *file = fopen(fileName, "r");
     char line[256];
     int n=0;

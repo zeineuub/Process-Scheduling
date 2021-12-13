@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
     if ((firstChar != '#') && (strlen(line) > 2)){
       //separator
       char d[] = " ";
-      //Save process details in "proc"
+      //Save process details in "p"
       strcpy(p[i].pid, strtok(line, d));
       p[i].t_arv = atoi(strtok(NULL, d));
       p[i].t_exec = atoi(strtok(NULL, d));
