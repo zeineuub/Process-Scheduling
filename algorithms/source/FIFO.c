@@ -2,18 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../../process.h"
-//calculate the number of occrence
-int nbr_occ(char s[100]) {
-    int occ = 0;
-    int i;
-    int len = strlen(s);
-    for (i = 0; s[i] != '\0'; ++i){
-        if (s[i] == ' '){
-            ++occ;
-        }
-    }
-    return occ;
-}
+#include "../../FileManager.h"
 //a function that swaps between 2 processes
 void swap(Process *A,Process *B){
     Process temp = *A;
@@ -30,25 +19,32 @@ int main(int argc, char* argv[]){
         printf("Error! opening file");
         exit(1);
     }
-    //display the list of process
+    //get the total number of processes
+    n =  getProcessnbFromFile(argv[1]);
+    //allocating memory for the tables used
+    p = (Process *)malloc(sizeof(Process) * n);
+    //print all information about the different processes
     printf("\t Welcome to First In First Out Scheduling Algorithm\n");
     puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
     puts("\t| PID |  Arrival Time  |   Burst Time   | Priority |");
     puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
-    fgets(line, sizeof(line), file);
-    if (atoi(line) != 0){
-        n = atoi(line);
-        p = (Process *)malloc(sizeof(Process) * n);
-        while ((i < n) && (fgets(line, sizeof(line), file))){
-            if (nbr_occ(line) > 2){
-                sscanf(line, "%s %d %d %d",p[i].pid, &p[i].t_arv, &p[i].t_exec, &p[i].priorite);
-                printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
-                i++;
-            }
+    while (fgets(line, sizeof(line), file)){
+        //first character of the line
+        char firstChar = line[0];
+        // check if line is empty or is a comment
+        if ((firstChar != '#') && (strlen(line) > 2)){
+            //separator
+            char d[] = " ";
+            //Save process details in "proc"
+            strcpy(p[i].pid, strtok(line, d));
+            p[i].t_arv = atoi(strtok(NULL, d));
+            p[i].t_exec = atoi(strtok(NULL, d));
+            p[i].priorite = atoi(strtok(NULL, d));
+            printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
+            i++;
         }
-    puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
-
     }
+    puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
     fclose(file);
     //save the name of the process i the first column and the time in the next 
     //gantt[n][2] 2 column to save name + starting time, n number of process

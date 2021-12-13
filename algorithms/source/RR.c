@@ -1,9 +1,11 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include "../../process.h"
+#include "../../FileManager.h"
 int main(int argc, char* argv[]){
     int i=0,j,n, len=0, *rt, *ct;
     FILE *file;
+    char line[256];
     Process *p = NULL;
     quantum ts;
     //checking if the config file exists or not
@@ -12,25 +14,39 @@ int main(int argc, char* argv[]){
         exit(1);
     }
     //get the total number of processes
-    fscanf(file, " %d", &n);
+    n =  getProcessnbFromFile(argv[1]);
+
     //allocating memory for the tables used
     p = (Process *)malloc(sizeof(Process) * n);
     rt = (int *)malloc(sizeof(int) * n);
     ct = (int *)malloc(sizeof(int) * n);
+    
     //print all information about the different processes
     printf("\t     Welcome to Round Robin Scheduling Algorithm\n");
     puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
     puts("\t| PID |  Arrival Time  |   Burst Time   | Priority |");
     puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
-    while (i < n){
-        fscanf(file, "%s %d %d %d",p[i].pid,&p[i].t_arv,&p[i].t_exec,&p[i].priorite);
-        //initialization of the remaining burst time and for the remaining burst time table
-        p[i].rnt=p[i].t_exec;
-        rt[i]=-1;
-        //get the total excution time
-        len+=p[i].t_exec;
-        printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
-        i++;
+    while (fgets(line, sizeof(line), file)){
+        //first character of the line
+        char firstChar = line[0];
+        // check if line is empty or is a comment
+        if ((firstChar != '#') && (strlen(line) > 2)){
+            //separator
+            char d[] = " ";
+            //Save process details in "proc"
+            strcpy(p[i].pid, strtok(line, d));
+            p[i].t_arv = atoi(strtok(NULL, d));
+            p[i].t_exec = atoi(strtok(NULL, d));
+            p[i].priorite = atoi(strtok(NULL, d));
+            //initialization of the remaining burst time and for the remaining burst time table
+            p[i].rnt=p[i].t_exec;
+            //get the total excution time
+            rt[i]=-1;
+            //get the total excution time
+            len+=p[i].t_exec;
+            printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
+            i++;
+        }
     }
     puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
     //get the quantum value from the user
