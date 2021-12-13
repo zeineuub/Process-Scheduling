@@ -24,7 +24,7 @@ int getProcessnbFromFile(char *fileName)
             //first character of the line
             char firstChar = line[0];
             // check if line is empty or is a comment
-            if ((firstChar != '/') && (strlen(line) > 2))
+            if ((firstChar != '#') && (strlen(line) > 2))
             {
                 n++;
             }

@@ -3,11 +3,14 @@
 #include "../../process.h"
 #include "../../FileManager.h"
 int main(int argc, char* argv[]){
-    int i=0,j,n, len=0, *rt, *ct;
+    int i=0,j,n, len=0;
     FILE *file;
     char line[256];
     Process *p = NULL;
     quantum ts;
+    int count=0,front=0,rear=-1;
+    j=0;
+    int *ready= NULL;
     //checking if the configuration file exists or not
     if ((file = fopen(argv[1],"r")) == NULL){
         printf("Error! opening file");
@@ -18,8 +21,6 @@ int main(int argc, char* argv[]){
 
     //allocating memory for the tables used
     p = (Process *)malloc(sizeof(Process) * n);
-    rt = (int *)malloc(sizeof(int) * n);
-    ct = (int *)malloc(sizeof(int) * n);
     
     //print all information about the different processes
     printf("\t     Welcome to Round Robin Scheduling Algorithm\n");
@@ -40,8 +41,6 @@ int main(int argc, char* argv[]){
             p[i].priorite = atoi(strtok(NULL, d));
             //initialization of the remaining burst time and for the remaining burst time table
             p[i].rnt=p[i].t_exec;
-            //initialize the remaining burst time table
-            rt[i]=-1;
             //get the total excution time for all the processes
             len+=p[i].t_exec;
             printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
@@ -50,33 +49,31 @@ int main(int argc, char* argv[]){
     }
     puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
     //get the quantum value from the user
-    printf("Enter Time Slice OR Quantum Number : ");
-    scanf("%d",&ts);
-    int ready[len];
-    int count=0,front=0,rear=-1,dec=0;
-    j=0;
+    while(ts==0 ){
+        printf("Enter Time Slice OR Quantum Number : ");
+        scanf("%d",&ts);
+    }
+    ready= (int *)malloc(sizeof(int) * len);
+    
     //displaying the gant chart
     printf("\nGantt chart:\n|");
     //looping until all processes complete their execution time
     while(j<n){
         int found=0;
         if(front>rear){
-            for(i=0;i<n;i++)
+            for(i=0;i<n;i++){
                 /*if the current process's arrival time is equal to the ongoing excution time
                 then make the current process ready for excution*/
                 if(p[i].t_arv==count){
                     ready[++rear]=i;
                     found=1;
                 }
-            }
+            }              
+        }
         else{
-            int k,ind=ready[front++],dec=0;
+            int k,ind=ready[front++];
             //print the process excution
             printf("%d-P%d-",count,(ind+1));
-            /*if the indexed process's remaining burst time is the default value
-            then it gets assigned to the remaining burst time from the previous execution*/
-            if(rt[ind]==-1)
-            rt[ind]=count-p[ind].t_arv;
             /*if the process's remaining burstime is less then the chosen quantum
             then we complete it's execution and then we move on to the next process*/
             if(p[ind].rnt<=ts){
@@ -85,15 +82,15 @@ int main(int argc, char* argv[]){
                     count++;
                     //getting the next process ready and advancing the execution variable
                     for(i=0;i<n;i++){
+                        //checking if there' a new process to add to the stack based on the arrival time
                         if(p[i].t_arv==count)ready[++rear]=i;
                     }
                 }
                 p[ind].rnt<=0;
-                ct[ind]=count;
                 j++;
             }
-            /*if the process's remaining burstime is greater then
-            the chosen quantum then we only excute the quantum's length of the remaining time and then we move on to the next process*/
+            /*if the process's remaining burst time is greater then
+            we only excute the quantum's length of the remaining time and then we move on to the next process*/
             else{
                 for(k=0;k<ts;k++){
                     count++;

@@ -7,7 +7,7 @@ int main(int argc, char* argv[]){
 
   FILE *file;
   char line[256];
-  int i=0,j=0,n,*Rt,*Ct,count=0,prev=-1,dec=0,choice,ind=-1;
+  int i=0,j=0,n,count=0,prev=-1,choice,ind=-1;
   Process *p = NULL;
   //checking if the configuration file exists or not
   if ((file = fopen(argv[1],"r")) == NULL){
@@ -18,8 +18,6 @@ int main(int argc, char* argv[]){
   n =  getProcessnbFromFile(argv[1]);
   //allocating memory for the tables used
   p = (Process *)malloc(sizeof(Process) * n);
-  Rt = (int *)malloc(sizeof(int) * n);
-  Ct = (int *)malloc(sizeof(int) * n);
   //print all information about the different processes
   printf("\t     Welcome to Priority Scheduling Algorithm\n");
   puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
@@ -39,7 +37,6 @@ int main(int argc, char* argv[]){
       p[i].priorite = atoi(strtok(NULL, d));
       //initialization of the remiaing burst time and for the remaining burst time table
       p[i].rnt=p[i].t_exec;
-      Rt[i]=-1;
       printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
       i++;
     }
@@ -51,46 +48,43 @@ int main(int argc, char* argv[]){
   
   while(j<n)
   {
-    int min=0,ind=-1;
+    int max=0,ind=-1;
     for(i=0;i<n;i++){
       /*checking if the current process's priority is the stored one 
       while making sure that it still got burst time left*/
-      if(p[i].priorite==min && p[i].rnt>0){
+      if(p[i].priorite==max && p[i].rnt>0){
         /*checking if the current process's arrival time exceds the indexed one's 
           if so the current process becomes the indexed one*/
         if(p[i].t_arv>p[ind].t_arv)ind=i;
       }
       /*checking if the current process's priority is bigger then the currently stored priority value
        while checking if the process still has burst time left*/
-      else if(p[i].priorite>min && p[i].rnt>0){
+      else if(p[i].priorite>max && p[i].rnt>0){
         //checking if the process's arrival time is less then the current excution time
         if(p[i].t_arv<=count){
           //storing the current process's priority and storing it's index
-          min=p[i].priorite;
+          max=p[i].priorite;
           ind=i;
         }
       }
     }
     //checking if we have a process's index already stored
     if(ind!=-1){
-      //the currently indexed process was executed
+      //updating the remaining execution time
       p[ind].rnt-=1;
-      //checking if the currently indexed process is not the previous one executed
+      /*checking if the currently indexed process
+       is not the previous one executed*/
       if(ind!=prev)printf("%d-P%d-",count,(ind+1));
-    }else{
-      //calculating the remaining burst time after the execution
-      dec=1;
-      }
-      if(ind!=prev && Rt[ind]==-1)Rt[ind]=count-p[ind].t_arv;     
-      count++;
-      //if the indexed process has finished all of it's burst time we move to the next one
-      if(p[ind].rnt==0 && ind!=-1){
-        Ct[ind]=count;
-        j++;
-        dec=0;
-      }
-      //the previously executed process becomes the current one
-      prev=ind;
+    }
+    //update the next starting time for the nex process     
+    count++;
+    //if the indexed process has finished all of it's burst time we move to the next one
+    if(p[ind].rnt==0 && ind!=-1){
+      //move one to teh next process
+      j++;
+    }
+    //the previously executed process becomes the current one
+    prev=ind;
     }
     //printing the final execution time
   printf("%d|\n",count);
