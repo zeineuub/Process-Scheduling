@@ -20,18 +20,20 @@ int main(int argc, char* argv[]){
   Rt = (int *)malloc(sizeof(int) * n);
   Ct = (int *)malloc(sizeof(int) * n);
   //print all information about the different processes
-  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
-  puts("\t| PID | Temps d'arrivé | Temps d'execution | Priorite |");
-  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+  printf("\t     Welcome to Priority Scheduling Algorithm\n");
+
+  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+  puts("\t| PID |  Arrival Time  |   Burst Time   | Priority |");
+  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
   while (i < n){
       fscanf(file, "%s %d %d %d",p[i].pid,&p[i].t_arv,&p[i].t_exec,&p[i].priorite);
       //initialization of the remiaing burst time and for the remaining burst time table
       p[i].rnt=p[i].t_exec;
       Rt[i]=-1;
-      printf("\t| %s  |       %d        |          %d        |    %d     |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
+      printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
       i++;
   }
-  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
   //displaying the gant chart
   printf("\nGantt chart:\n|");
   

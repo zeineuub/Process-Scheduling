@@ -25,16 +25,17 @@ int main(int argc, char* argv[]){
   p = (Process *)malloc(sizeof(Process) * n);
   tat = (int *)malloc(sizeof(int) * n);
   //display the list of processes
-  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
-  puts("\t| PID | Temps d'arrivé | Temps d'execution | Priorite |");
-  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+  printf("\tWelcome to Shortest Remaing Time Scheduling Algorithm\n");
+  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+  puts("\t| PID |  Arrival Time  |   Burst Time   | Priority |");
+  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
   while (i < n){
       fscanf(file, "%s %d %d %d",p[i].pid,&p[i].t_arv,&p[i].t_exec,&p[i].priorite);
-      printf("\t| %s  |       %d        |          %d        |    %d     |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
+      printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
       p[i].rnt=p[i].t_exec;
       i++;
   }
-  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+  puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
   while (1){
     for (i=1;i<n;i++){
       /* swap when the remaining time of the current process is smaller then the remaining time of the 

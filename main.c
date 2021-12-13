@@ -34,17 +34,17 @@ int main(int argc, char* argv[]){
     if (pDir == NULL) 
         printf ("Cannot open directory");
     else{
-        printf("\t\t\t Algorithm Game\n");
+        printf("\t\t\t     Algorithm Game\n");
         puts("\t\t\t¤ ~~~ ¤ ¤ ~~~ ¤ ¤ ~~~ ¤");
         while ((pDirent = readdir(pDir)) != NULL ) {
             if (strlen(pDirent->d_name)>1 && strstr(pDirent->d_name, "..")== NULL && strstr(pDirent->d_name, ".o")== NULL) {
                 strcpy(choix[nbAlgo],pDirent->d_name);
-                printf ("\t\t\t%d. %s\n",nbAlgo,choix[nbAlgo]);
+                printf ("\t\t\t\t%d. %s\n",nbAlgo,choix[nbAlgo]);
                 nbAlgo++;
             }
 
         }
-        printf("\t\t\t%d. Exit\n", nbAlgo);
+        printf("\t\t\t\t%d. Exit\n", nbAlgo);
         puts("\t\t\t¤ ~~~ ¤ ¤ ~~~ ¤ ¤ ~~~ ¤");        closedir (pDir);
     }
     //processTable(file);

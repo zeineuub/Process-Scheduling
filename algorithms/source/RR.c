@@ -18,9 +18,10 @@ int main(int argc, char* argv[]){
     rt = (int *)malloc(sizeof(int) * n);
     ct = (int *)malloc(sizeof(int) * n);
     //print all information about the different processes
-    puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
-    puts("\t| PID | Temps d'arrivé | Temps d'execution | Priorite |");
-    puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+    printf("\t     Welcome to Round Robin Scheduling Algorithm\n");
+    puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+    puts("\t| PID |  Arrival Time  |   Burst Time   | Priority |");
+    puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
     while (i < n){
         fscanf(file, "%s %d %d %d",p[i].pid,&p[i].t_arv,&p[i].t_exec,&p[i].priorite);
         //initialization of the remaining burst time and for the remaining burst time table
@@ -28,10 +29,10 @@ int main(int argc, char* argv[]){
         rt[i]=-1;
         //get the total excution time
         len+=p[i].t_exec;
-        printf("\t| %s  |       %d        |          %d        |    %d     |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
+        printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
         i++;
     }
-    puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+    puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
     //get the quantum value from the user
     printf("Enter Time Slice OR Quantum Number : ");
     scanf("%d",&ts);
