@@ -13,6 +13,7 @@ int main(int argc, char* argv[]){
   FILE *file;
   int i=0,j,n,*tat,c,e=0,start=0, token;
   Process *p = NULL;
+  int *gantt = NULL;
   char line[256];
   //checking if the config file exists or not
   if ((file = fopen(argv[1],"r")) == NULL){
@@ -23,12 +24,12 @@ int main(int argc, char* argv[]){
   n =  getProcessnbFromFile(argv[1]);
   //save the name of the process i the first column and the start in the next 
   //gantt[n][2] 2 column to save name + starting start, n number of process
-  int gantt[n][2];
+  gantt = (int *)malloc(n * 2 * sizeof(int));
   //allocating memory for the tables used
   p = (Process *)malloc(sizeof(Process) * n);
   tat = (int *)malloc(sizeof(int) * n);
   //print all information about the different processes
-    printf("\tWelcome to Shortest Remaing Time Scheduling Algorithm\n");
+  printf("\tWelcome to Shortest Remaing Time Scheduling Algorithm\n");
   puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
   puts("\t| PID |  Arrival Time  |   Burst Time   | Priority |");
   puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
@@ -63,11 +64,11 @@ int main(int argc, char* argv[]){
     token = atoi(strtok(p[0].pid,"P"));
     if (p[0].rnt!=0){
       //save the name and the starting time of the process
-      if (e==0 || gantt[e-1][0]!=token){
+      if (e==0 || gantt[((e-1)*2) + 0]!=token){
         //name
-        gantt[e][0]=token;
+        gantt[e*2 + 0]=token;
         //time
-        gantt[e++][1]=start;
+        gantt[((e++)*2) +1]=start;
       }
       /*check if the process finished the execution
       if he did the remaining time rnt should be 
@@ -89,7 +90,7 @@ int main(int argc, char* argv[]){
     // end of execution if no processes are left
     if (c==0)break;
   }
-  gantt[e][1]=start;
+  gantt[e*2 +1]=start;
   printf("\n\nThe Gantt chart is:\n\n");
   printf (" ");
   for (i=0;i<e;i++){
@@ -98,7 +99,7 @@ int main(int argc, char* argv[]){
   printf ("\n");
   //display the name of each process
   for (i=0;i<e;i++){ 
-    printf (gantt[i][0]==-1?"|   ":"| P%d ",gantt[i][0]);
+    printf (gantt[i*2 +0]==-1?"|   ":"| P%d ",gantt[i*2 +0]);
   } 
   printf ("|\n ");
   for (i=0;i<e;i++){
@@ -107,7 +108,7 @@ int main(int argc, char* argv[]){
   printf ("\n");
   //display the (start,end) time for each process
   for (i=0;i<=e;i++){
-    printf ("%d    ",gantt[i][1]);
+    printf ("%d    ",gantt[i*2 +1]);
   }
 
   return 0;

@@ -13,6 +13,7 @@ int main(int argc, char* argv[]){
   FILE *file;
   int i=0,j,n,k,t,e=0,m=0,token, start;
   Process *p = NULL;
+  int *gantt = NULL;
   char line[256];
   //checking if the config file exists or not
   if ((file = fopen(argv[1],"r")) == NULL){
@@ -23,7 +24,7 @@ int main(int argc, char* argv[]){
   n =  getProcessnbFromFile(argv[1]);
   //save the name of the process i the first column and the time in the next 
   //gantt[n][2] 2 column to save name + starting time, n number of process
-  int gantt[n][2];
+  gantt = (int *)malloc(n * 2 * sizeof(int));
   p = (Process *)malloc(sizeof(Process) * n);
   //print all information about the different processes
   printf("\t  Welcome to Shortest Job First Scheduling Algorithm\n");
@@ -78,35 +79,37 @@ int main(int argc, char* argv[]){
     /*extract the number of the current process */    
     token = atoi(strtok(p[i].pid,"P"));
     if (start-p[i].t_arv<0){
-      gantt[e][0]=-1;
-      gantt[e++][1]=start;
+      gantt[e*2 + 0]=-1;
+      gantt[e++*2 + 1]=start;
       start+=p[i].t_arv-start;
     }
-    gantt[e][0]=token;
+    gantt[e*2 + 0]=token;
     //save the name of the process that will be executed
-    gantt[e++][1]=start;
+    gantt[e++*2 + 1]=start;
     //the process i+1 will start after the process i completes it's execution
     start+=p[i].t_exec;    
   }
-  gantt[e][1]=start;
-  printf("\n\nThe Gantt chart is:\n\n");
-  printf (" ");
-  for (i=0;i<e;i++){
-    printf ("---- ");
-  }
-  printf ("\n");
-  //display the name of processes
-  for (i=0;i<e;i++){   
-    printf (gantt[i][0]==-1?"|   ":"| P%d ",gantt[i][0]);
-  }
-  printf ("|\n ");
-  for (i=0;i<e;i++){
-    printf ("---- ");
-  }
-  //display the (start,end) time of each process
-  printf ("\n");
-  for (i=0;i<=e;i++){   
-    printf ("%d    ",gantt[i][1]);
-  }
+    //displaying the gant chart
+    gantt[e*2 +1]=start;
+    printf("\n\nThe Gantt chart is:\n\n");
+
+    printf (" ");
+    for (i=0;i<e;i++){
+        printf ("---- ");
+    }
+    printf ("\n");
+    //display the name of each process
+    for (i=0;i<e;i++){   
+        printf (gantt[i*2 + 0]==-1?"|   ":"| P%d ",gantt[i*2 + 0]);
+    }
+    printf ("|\n ");
+    for (i=0;i<e;i++){
+        printf ("---- ");
+    }
+    printf ("\n");
+    //display the (start,end) time of each process
+    for (i=0;i<=e;i++){   
+        printf ("%d    ",gantt[i*2 + 1]);
+    }
   return 0;
 }
