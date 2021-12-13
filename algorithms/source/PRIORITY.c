@@ -9,7 +9,7 @@ int main(int argc, char* argv[]){
   char line[256];
   int i=0,j=0,n,*Rt,*Ct,count=0,prev=-1,dec=0,choice,ind=-1;
   Process *p = NULL;
-  //checking if the config file exists or not
+  //checking if the configuration file exists or not
   if ((file = fopen(argv[1],"r")) == NULL){
       printf("Error! opening file");
       exit(1);
@@ -32,7 +32,7 @@ int main(int argc, char* argv[]){
     if ((firstChar != '#') && (strlen(line) > 2)){
       //separator
       char d[] = " ";
-      //Save process details in "proc"
+      //Save process details in "p"
       strcpy(p[i].pid, strtok(line, d));
       p[i].t_arv = atoi(strtok(NULL, d));
       p[i].t_exec = atoi(strtok(NULL, d));

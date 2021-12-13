@@ -15,14 +15,14 @@ int main(int argc, char* argv[]){
     Process *p = NULL;
     int *gantt = NULL;
     char line[256];
-    //checking if the config file exists or not
+    //checking if the configuration file exists or not
     if ((file = fopen(argv[1],"r")) == NULL){
         printf("Error! opening file");
         exit(1);
     }
     //get the total number of processes
     n =  getProcessnbFromFile(argv[1]);
-    //allocating memory for the tables used
+    //allocating memory for the table used
     p = (Process *)malloc(sizeof(Process) * n);
     //print all information about the different processes
     printf("\t Welcome to First In First Out Scheduling Algorithm\n");
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]){
         if ((firstChar != '#') && (strlen(line) > 2)){
             //separator
             char d[] = " ";
-            //Save process details in "proc"
+            //Save process details in "p"
             strcpy(p[i].pid, strtok(line, d));
             p[i].t_arv = atoi(strtok(NULL, d));
             p[i].t_exec = atoi(strtok(NULL, d));

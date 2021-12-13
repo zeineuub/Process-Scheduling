@@ -8,7 +8,7 @@ int main(int argc, char* argv[]){
     char line[256];
     Process *p = NULL;
     quantum ts;
-    //checking if the config file exists or not
+    //checking if the configuration file exists or not
     if ((file = fopen(argv[1],"r")) == NULL){
         printf("Error! opening file");
         exit(1);
@@ -33,16 +33,16 @@ int main(int argc, char* argv[]){
         if ((firstChar != '#') && (strlen(line) > 2)){
             //separator
             char d[] = " ";
-            //Save process details in "proc"
+            //Save process details in "p"
             strcpy(p[i].pid, strtok(line, d));
             p[i].t_arv = atoi(strtok(NULL, d));
             p[i].t_exec = atoi(strtok(NULL, d));
             p[i].priorite = atoi(strtok(NULL, d));
             //initialization of the remaining burst time and for the remaining burst time table
             p[i].rnt=p[i].t_exec;
-            //get the total excution time
+            //initialize the remaining burst time table
             rt[i]=-1;
-            //get the total excution time
+            //get the total excution time for all the processes
             len+=p[i].t_exec;
             printf("\t| %s  |       %d        |        %d       |     %d    |\n",p[i].pid, p[i].t_arv, p[i].t_exec, p[i].priorite);
             i++;
