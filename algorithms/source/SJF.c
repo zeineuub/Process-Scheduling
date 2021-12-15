@@ -91,25 +91,24 @@ int main(int argc, char* argv[]){
   }
     //displaying the gant chart
     gantt[e*2 +1]=start;
-    printf("\n\nThe Gantt chart is:\n\n");
-
-    printf (" ");
+    printf("\n\nThe Gantt chart is:\n");
+    printf(" ");
     for (i=0;i<e;i++){
-        printf ("---- ");
+        printf (" ¤---¤  ");
     }
     printf ("\n");
     //display the name of each process
     for (i=0;i<e;i++){   
-        printf (gantt[i*2 + 0]==-1?"|   ":"| P%d ",gantt[i*2 + 0]);
+        printf ("|  P%d\t",gantt[i*2 + 0]);
     }
     printf ("|\n ");
     for (i=0;i<e;i++){
-        printf ("---- ");
+        printf (" ¤---¤  ");
     }
     printf ("\n");
     //display the (start,end) time of each process
     for (i=0;i<=e;i++){   
-        printf ("%d    ",gantt[i*2 + 1]);
+        printf ("%d\t",gantt[i*2 + 1]);
     }
   return 0;
 }

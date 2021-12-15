@@ -3,14 +3,13 @@
 #include "../../process.h"
 #include "../../FileManager.h"
 int main(int argc, char* argv[]){
-    int i=0,j,n, len=0;
+    int i=0, j=0, n, len=0, count=0, front=0, rear=-1, e=0;
     FILE *file;
     char line[256];
     Process *p = NULL;
     quantum ts;
-    int count=0,front=0,rear=-1;
-    j=0;
     int *ready= NULL;
+    int *gantt = NULL;
     //checking if the configuration file exists or not
     if ((file = fopen(argv[1],"r")) == NULL){
         printf("Error! opening file");
@@ -48,15 +47,18 @@ int main(int argc, char* argv[]){
         }
     }
     puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+    fclose(file);
+    //save the name of the process i the first column and the time in the next 
+    //gantt[n][2] 2 column to save name + starting time, n number of process
+    gantt = (int *)malloc(n * 2 * sizeof(int));
+    // allocation of the ready que
+    ready= (int *)malloc(sizeof(int) * len);
+    
     //get the quantum value from the user
     while(ts==0 ){
         printf("Enter Time Slice OR Quantum Number : ");
         scanf("%d",&ts);
     }
-    ready= (int *)malloc(sizeof(int) * len);
-    
-    //displaying the gant chart
-    printf("\nGantt chart:\n|");
     //looping until all processes complete their execution time
     while(j<n){
         int found=0;
@@ -72,8 +74,10 @@ int main(int argc, char* argv[]){
         }
         else{
             int k,ind=ready[front++];
-            //print the process excution
-            printf("%d-P%d-",count,(ind+1));
+            //saving the indice of the process
+            gantt[e*2 +0]=ind+1;
+            //saving the starting time
+            gantt[((e++)*2) +1]=count;
             /*if the process's remaining burstime is less then the chosen quantum
             then we complete it's execution and then we move on to the next process*/
             if(p[ind].rnt<=ts){
@@ -105,7 +109,27 @@ int main(int argc, char* argv[]){
             }
         }
     }
-    //printing the final execution time
-    printf("%d|\n",count);
+    //displaying the gant chart
+    gantt[e*2 +1]=count;
+    
+    printf("\n\nThe Gantt chart is:\n");
+    printf(" ");
+    for (i=0;i<e;i++){
+        printf (" ¤---¤  ");
+    }
+    printf ("\n");
+    //display the name of each process
+    for (i=0;i<e;i++){   
+        printf ("|  P%d\t",gantt[i*2 + 0]);
+    }
+    printf ("|\n ");
+    for (i=0;i<e;i++){
+        printf (" ¤---¤  ");
+    }
+    printf ("\n");
+    //display the (start,end) time of each process
+    for (i=0;i<=e;i++){   
+        printf ("%d\t",gantt[i*2 + 1]);
+    }
     return 0;
 }

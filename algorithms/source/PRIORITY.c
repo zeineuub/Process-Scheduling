@@ -7,8 +7,9 @@ int main(int argc, char* argv[]){
 
   FILE *file;
   char line[256];
-  int i=0,j=0,n,count=0,prev=-1,choice,ind=-1;
+  int i=0,j=0,n,e=0,count=0,prev=-1,choice,ind=-1,start=0;
   Process *p = NULL;
+  int *gantt = NULL;
   //checking if the configuration file exists or not
   if ((file = fopen(argv[1],"r")) == NULL){
       printf("Error! opening file");
@@ -42,10 +43,11 @@ int main(int argc, char* argv[]){
     }
   }
   puts("\t¤ ~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~~~~~~~ ¤ ~~~~~~~~ ¤");
+  fclose(file);
+  //save the name of the process i the first column and the time in the next 
+  //gantt[n][2] 2 column to save name + starting time, n number of process
+  gantt = (int *)malloc(n * 2 * sizeof(int));
   //displaying the gant chart
-  printf("\nGantt chart:\n|");
-  
-  
   while(j<n)
   {
     int max=0,ind=-1;
@@ -74,7 +76,12 @@ int main(int argc, char* argv[]){
       p[ind].rnt-=1;
       /*checking if the currently indexed process
        is not the previous one executed*/
-      if(ind!=prev)printf("%d-P%d-",count,(ind+1));
+      if(ind!=prev){
+        //saving the indice of the process
+        gantt[e*2 +0]=ind+1;
+        //saving the starting time
+        gantt[((e++)*2) +1]=count;
+      }
     }
     //update the next starting time for the nex process     
     count++;
@@ -86,8 +93,27 @@ int main(int argc, char* argv[]){
     //the previously executed process becomes the current one
     prev=ind;
     }
-    //printing the final execution time
-  printf("%d|\n",count);
+    //displaying the gant chart
+    gantt[e*2 +1]=count;
+    printf("\n\nThe Gantt chart is:\n");
+    printf(" ");
+    for (i=0;i<e;i++){
+        printf (" ¤---¤  ");
+    }
+    printf ("\n");
+    //display the name of each process
+    for (i=0;i<e;i++){   
+        printf ("|  P%d\t",gantt[i*2 + 0]);
+    }
+    printf ("|\n ");
+    for (i=0;i<e;i++){
+        printf (" ¤---¤  ");
+    }
+    printf ("\n");
+    //display the (start,end) time of each process
+    for (i=0;i<=e;i++){   
+        printf ("%d\t",gantt[i*2 + 1]);
+    }
   return 0;
 }
 
